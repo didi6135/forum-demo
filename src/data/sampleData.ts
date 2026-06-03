@@ -4,6 +4,7 @@
  */
 
 export type ModuleKey =
+  | "design"
   | "dashboard"
   | "inbox"
   | "daily"

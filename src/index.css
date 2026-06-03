@@ -2,29 +2,55 @@
    Design system — Gmail-grade, RTL Hebrew
    ============================================================ */
 
+/* ============================================================
+   DESIGN TOKENS — "Elevated Gmail"
+   Single source of truth for the entire app. Every screen reads
+   from here; nothing should hard-code a hex value.
+
+   Brand:  הפורום להגנת הצרכן החרדי
+   Voice:  trustworthy · institutional · Google-Workspace-grade
+   Rule:   one accent (forum blue), used only where it must lead
+           the eye — structure carries the rest.
+   ============================================================ */
 :root {
-  /* Brand & surfaces */
+  /* ---- Brand · forum-blue tonal ramp ----------------------- */
+  --primary-50: #eaf1fe;
+  --primary-100: #d2e3fc;
+  --primary-200: #a8c7fa;
+  --primary-300: #7baaf7;
+  --primary-400: #4d8bf0;
+  --primary-500: #1a73e8; /* base — "כחול הפורום" */
+  --primary-600: #1765cc;
+  --primary-700: #1557b0;
+  --primary-800: #114390;
+  --primary-900: #0c3370;
+
+  /* Semantic aliases (kept stable for components) */
+  --primary: var(--primary-500);
+  --primary-soft: var(--primary-50);
+  --primary-soft-2: var(--primary-100);
+  --on-primary: #ffffff;
+
+  /* ---- Surfaces · Material-3 container ladder --------------- */
   --bg: #f6f8fc;
   --surface: #ffffff;
   --surface-2: #f1f4f9;
   --rail: #f6f8fc;
+  --surface-container-low: #f7f9fc;
+  --surface-container: #f1f4f9;
+  --surface-container-high: #e9edf3;
 
-  /* Primary (Gmail blue, premium) */
-  --primary: #1a73e8;
-  --primary-700: #1557b0;
-  --primary-soft: #e8f0fe;
-  --primary-soft-2: #d2e3fc;
-
-  /* Text */
+  /* ---- Text ------------------------------------------------- */
   --text: #202124;
   --text-2: #5f6368;
   --text-3: #80868b;
 
-  /* Lines */
+  /* ---- Lines ------------------------------------------------ */
   --border: #e8eaed;
   --border-2: #dadce0;
+  --border-strong: #c4c9d0;
 
-  /* Semantic */
+  /* ---- Semantic --------------------------------------------- */
   --green: #1e8e3e;
   --green-soft: #e6f4ea;
   --red: #d93025;
@@ -36,15 +62,55 @@
   --teal: #129eaf;
   --teal-soft: #e4f7f9;
 
-  /* Elevation */
-  --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.12), 0 1px 3px rgba(60, 64, 67, 0.06);
-  --shadow-md: 0 1px 3px rgba(60, 64, 67, 0.16), 0 4px 8px rgba(60, 64, 67, 0.08);
-  --shadow-lg: 0 2px 6px rgba(60, 64, 67, 0.16), 0 8px 24px rgba(60, 64, 67, 0.12);
+  /* ---- Typography ------------------------------------------- */
+  --font-sans: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-display: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Roboto Mono", "Menlo", "Consolas", monospace;
 
+  /* Type scale — role : size / line-height / weight             */
+  --fs-display: 28px; /* page hero      · 800 */
+  --fs-headline: 22px; /* section title  · 700 */
+  --fs-title: 19px; /* card / panel   · 700 */
+  --fs-title-sm: 15px; /* sub-title      · 700 */
+  --fs-body-lg: 15px; /* lead body      · 400 */
+  --fs-body: 14px; /* default body   · 400 */
+  --fs-label: 12.5px; /* meta / labels  · 600 */
+  --fs-label-sm: 11px; /* overline       · 700 + tracking */
+
+  /* ---- Spacing · 4px base ----------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* ---- Radii ------------------------------------------------ */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
   --radius: 12px;
   --radius-lg: 18px;
   --radius-pill: 999px;
 
+  /* ---- Elevation · tonal, restrained ------------------------ */
+  --shadow-xs: 0 1px 1px rgba(60, 64, 67, 0.08);
+  --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.12), 0 1px 3px rgba(60, 64, 67, 0.06);
+  --shadow-md: 0 1px 3px rgba(60, 64, 67, 0.16), 0 4px 8px rgba(60, 64, 67, 0.08);
+  --shadow-lg: 0 2px 6px rgba(60, 64, 67, 0.16), 0 8px 24px rgba(60, 64, 67, 0.12);
+
+  /* ---- Motion ----------------------------------------------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --dur-slow: 280ms;
+
+  /* ---- Interaction ------------------------------------------ */
+  --focus-ring: 0 0 0 3px var(--primary-100);
+
+  /* ---- Layout ----------------------------------------------- */
   --rail-w: 232px;
 }
 
@@ -60,10 +126,10 @@ body,
 }
 
 body {
-  font-family: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
-  font-size: 14px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -72,6 +138,13 @@ body {
 button {
   font-family: inherit;
   cursor: pointer;
+}
+
+/* Keyboard focus — visible only for keyboard users, never on mouse click */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-xs);
 }
 
 ::-webkit-scrollbar {
@@ -1322,6 +1395,303 @@ button {
   padding: 5px 12px;
   border-radius: 999px;
   margin-bottom: 22px;
+}
+
+/* ============================================================
+   DESIGN SYSTEM — living style guide ("תבנית עיצוב")
+   Documents the tokens above. This page IS the spec.
+   ============================================================ */
+.ds {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-8) var(--space-10) var(--space-10);
+}
+.ds-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* ---- Hero ---- */
+.ds-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--border);
+}
+.ds-hero-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 27px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary-700), var(--primary-500) 60%, var(--primary-400));
+  box-shadow: 0 2px 10px rgba(26, 115, 232, 0.35);
+}
+.ds-hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  margin: 2px 0 6px;
+}
+.ds-hero p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-body-lg);
+  line-height: 1.7;
+  max-width: 640px;
+}
+.ds-hero-meta {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---- Section scaffold ---- */
+.ds-section { margin-bottom: var(--space-10); }
+.ds-overline {
+  font-size: var(--fs-label-sm);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--primary-700);
+}
+.ds-section > h2 {
+  font-size: var(--fs-headline);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin: var(--space-1) 0 var(--space-1);
+}
+.ds-section > .ds-lead {
+  margin: 0 0 var(--space-5);
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  max-width: 680px;
+  line-height: 1.65;
+}
+
+/* ---- Color swatches ---- */
+.ds-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+.ds-swatch {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+.ds-swatch-chip {
+  height: 72px;
+  border-bottom: 1px solid var(--border);
+}
+.ds-swatch-meta {
+  padding: 9px 12px;
+}
+.ds-swatch-name {
+  font-size: var(--fs-label);
+  font-weight: 700;
+}
+.ds-swatch-hex {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Tonal ramp — single continuous bar */
+.ds-ramp {
+  display: flex;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.ds-ramp-step {
+  flex: 1;
+  height: 64px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* ---- Type specimens ---- */
+.ds-type-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ds-type-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+.ds-type-row:last-child { border-bottom: none; }
+.ds-type-tag {
+  flex-shrink: 0;
+  width: 150px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.ds-type-tag b {
+  display: block;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  margin-bottom: 1px;
+}
+.ds-type-sample { min-width: 0; flex: 1; }
+
+/* ---- Generic demo grid for components ---- */
+.ds-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: var(--space-5);
+}
+.ds-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.ds-row + .ds-row { margin-top: var(--space-4); }
+.ds-col-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+/* Elevation demo cards */
+.ds-elev {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+.ds-elev-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  height: 96px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+/* Token tables (spacing / radius / motion) */
+.ds-tokens {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ds-token {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+.ds-token:last-child { border-bottom: none; }
+.ds-token-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  width: 150px;
+  flex-shrink: 0;
+}
+.ds-token-val {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  width: 90px;
+  flex-shrink: 0;
+}
+.ds-token-vis { flex: 1; display: flex; align-items: center; }
+.ds-space-bar {
+  height: 14px;
+  background: var(--primary-200);
+  border-radius: 3px;
+}
+.ds-radius-box {
+  width: 56px;
+  height: 40px;
+  background: var(--primary-soft);
+  border: 1.5px solid var(--primary-300);
+}
+
+/* Iconography */
+.ds-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: var(--space-2);
+}
+.ds-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-4) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.ds-icon i { font-size: 22px; color: var(--text); }
+.ds-icon span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-3);
+}
+
+/* Principles callouts */
+.ds-principles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+.ds-principle {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-container-low);
+}
+.ds-principle i {
+  font-size: 20px;
+  color: var(--primary-600);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ds-principle h4 { margin: 0 0 3px; font-size: var(--fs-title-sm); font-weight: 700; }
+.ds-principle p { margin: 0; font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .ds-elev { grid-template-columns: repeat(2, 1fr); }
+  .ds-principles, .ds-col-2 { grid-template-columns: 1fr; }
+  .ds { padding: var(--space-6) var(--space-5) var(--space-8); }
 }
 
 /* responsive-ish guard for small screens */

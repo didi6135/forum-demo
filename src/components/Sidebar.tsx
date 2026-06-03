@@ -36,7 +36,10 @@ const NAV: NavGroup[] = [
   },
   {
     label: "מערכת",
-    items: [{ key: "tests", label: "בדיקות", icon: "bi-clipboard2-check" }],
+    items: [
+      { key: "design", label: "תבנית עיצוב", icon: "bi-bezier2" },
+      { key: "tests", label: "בדיקות", icon: "bi-clipboard2-check" },
+    ],
   },
 ];
 

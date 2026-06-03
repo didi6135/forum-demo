@@ -5,6 +5,7 @@ import { TopBar } from "./components/TopBar";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./modules/Dashboard";
 import { Inbox } from "./modules/Inbox";
+import { DesignSystem } from "./modules/DesignSystem";
 
 /** Placeholder for screens we haven't designed together yet. */
 function ComingSoon({ title }: { title: string }) {
@@ -22,6 +23,7 @@ function ComingSoon({ title }: { title: string }) {
 }
 
 const MODULE_TITLES: Record<ModuleKey, string> = {
+  design: "תבנית עיצוב",
   dashboard: "לוח בקרה",
   inbox: "דואר נכנס",
   daily: "סיכום יומי",
@@ -34,7 +36,8 @@ const MODULE_TITLES: Record<ModuleKey, string> = {
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [active, setActive] = useState<ModuleKey>("dashboard");
+  // After login we land on the design-system tab — the new visual base.
+  const [active, setActive] = useState<ModuleKey>("design");
 
   if (!loggedIn) {
     return <Login onLogin={() => setLoggedIn(true)} />;
@@ -42,6 +45,8 @@ export function App() {
 
   function renderModule() {
     switch (active) {
+      case "design":
+        return <DesignSystem />;
       case "dashboard":
         return <Dashboard />;
       case "inbox":
