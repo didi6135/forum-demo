@@ -1,9 +1,11 @@
+import logoMark from "../../assets/logo_mark.png";
+
 export function TopBar() {
   return (
     <header className="topbar">
       <div className="brand">
         <div className="brand-logo">
-          <i className="bi bi-shield-fill-check" />
+          <img src={logoMark} alt="הפורום להגנת הצרכן החרדי" />
         </div>
         <div className="brand-text">
           <span className="brand-title">הפורום להגנת הצרכן החרדי</span>
