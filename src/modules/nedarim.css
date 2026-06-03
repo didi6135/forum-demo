@@ -1,0 +1,115 @@
+/* ============================================================
+ * Nedarim Plus — donations view with customer + category filters
+ * Reuses shared tokens, .dd dropdown, .seg, .badge, .tone-* helpers.
+ * ============================================================ */
+
+.ned {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ---- header ---- */
+.ned-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; }
+.ned-title { margin: 0; font-size: var(--fs-headline); font-weight: 800; letter-spacing: -0.3px; }
+.ned-sub { margin: 4px 0 0; font-size: 13px; color: var(--text-2); }
+
+/* ---- stat strip ---- */
+.ned-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.ned-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-container-low);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.ned-stat-ic { width: 38px; height: 38px; border-radius: var(--radius-sm); display: grid; place-items: center; font-size: 18px; flex-shrink: 0; }
+.ned-stat-val { font-size: 19px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.ned-stat-lbl { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+
+/* ---- category summary cards (clickable filter) ---- */
+.ned-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.ned-cat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: start;
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+}
+.ned-cat:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.ned-cat.is-active { border-color: var(--primary-300); box-shadow: 0 0 0 2px var(--primary-soft); background: var(--primary-soft); }
+.ned-cat-ic { width: 36px; height: 36px; border-radius: var(--radius-sm); display: grid; place-items: center; font-size: 17px; flex-shrink: 0; }
+.ned-cat-body { flex: 1; min-width: 0; }
+.ned-cat-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ned-cat-total { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.ned-cat-count {
+  flex-shrink: 0;
+  min-width: 24px; height: 24px; padding: 0 6px;
+  display: grid; place-items: center;
+  background: var(--surface-2); color: var(--text-2);
+  border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+
+/* ---- filter bar ---- */
+.ned-filters { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.ned-clear { margin-inline-start: auto; }
+
+/* ---- transactions table ---- */
+.ned-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ned-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1.6fr 1fr 1.1fr 0.9fr 0.9fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+.ned-row:last-child { border-bottom: none; }
+.ned-row:not(.ned-row-head):hover { background: var(--surface-container-low); }
+.ned-row-head {
+  background: var(--surface-container-low);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.ned-donor { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ned-donor-name { font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ned-cat-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; }
+.ned-muted { color: var(--text-2); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.ned-amount { font-weight: 700; font-size: 14px; font-variant-numeric: tabular-nums; }
+.ned-col-amount { text-align: start; }
+
+.ned-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  color: var(--text-3);
+}
+.ned-empty i { font-size: 30px; opacity: 0.55; }
+.ned-empty p { margin: 0; font-size: 14px; }
+
+/* ---- responsive ---- */
+@media (max-width: 860px) {
+  .ned-stats, .ned-cats { grid-template-columns: repeat(2, 1fr); }
+  .ned-row { grid-template-columns: 1.4fr 1.4fr 0.8fr 0.8fr; }
+  .ned-col-pay, .ned-col-date { display: none; }
+}

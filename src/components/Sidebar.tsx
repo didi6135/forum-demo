@@ -24,15 +24,14 @@ const NAV: NavGroup[] = [
     label: "פניות וטיפול",
     items: [
       { key: "inquiries", label: "פניות ידע פון", icon: "bi-telephone-fill", count: 6 },
+      { key: "whatsapp", label: "וואטסאפ", icon: "bi-whatsapp", count: 3 },
       { key: "customers", label: "ניהול לקוחות", icon: "bi-people-fill" },
+      { key: "contacts", label: "אנשי קשר ויועצים", icon: "bi-person-vcard" },
     ],
   },
   {
     label: "כספים",
-    items: [
-      { key: "nedarim", label: "נדרים פלוס", icon: "bi-cash-coin" },
-      { key: "receipts", label: "קבלות", icon: "bi-receipt" },
-    ],
+    items: [{ key: "nedarim", label: "נדרים פלוס", icon: "bi-cash-coin" }],
   },
   {
     label: "מערכת",
@@ -51,11 +50,6 @@ interface SidebarProps {
 export function Sidebar({ active, onSelect }: SidebarProps) {
   return (
     <nav className="rail">
-      <button className="compose-btn" type="button">
-        <i className="bi bi-pencil-fill" />
-        כתיבה
-      </button>
-
       {NAV.map((group, gi) => (
         <div key={group.label ?? `g-${gi}`}>
           {group.label && <div className="rail-section-label">{group.label}</div>}

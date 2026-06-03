@@ -53,18 +53,18 @@ const PRIMARY_RAMP = [
 const TYPE_SCALE: { tag: string; meta: string; el: JSX.Element }[] = [
   {
     tag: "Display",
-    meta: "28px · 800",
-    el: <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.6px" }}>הפורום להגנת הצרכן החרדי</div>,
+    meta: "28px · 600",
+    el: <div style={{ fontSize: 28, fontWeight: 600, letterSpacing: "-0.4px" }}>הפורום להגנת הצרכן החרדי</div>,
   },
   {
     tag: "Headline",
-    meta: "22px · 700",
-    el: <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.3px" }}>סקירת פעילות יומית</div>,
+    meta: "22px · 600",
+    el: <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.2px" }}>סקירת פעילות יומית</div>,
   },
   {
     tag: "Title",
-    meta: "19px · 700",
-    el: <div style={{ fontSize: 19, fontWeight: 700 }}>פניות שטרם טופלו</div>,
+    meta: "19px · 600",
+    el: <div style={{ fontSize: 19, fontWeight: 600 }}>פניות שטרם טופלו</div>,
   },
   {
     tag: "Body Large",
@@ -85,7 +85,7 @@ const TYPE_SCALE: { tag: string; meta: string; el: JSX.Element }[] = [
     tag: "Numeric / mono",
     meta: "tabular-nums",
     el: (
-      <div style={{ fontSize: 20, fontWeight: 800, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.5px" }}>
+      <div style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.2px" }}>
         ₪ 128,450 · 1,847 · 09:42
       </div>
     ),

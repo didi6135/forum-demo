@@ -1,0 +1,289 @@
+/* ============================================================
+ * WhatsApp — visual chat interface (demo)
+ * Modern, clean take using authentic WhatsApp brand colors.
+ * RTL: conversation list on the start (right), chat on the end (left).
+ * ============================================================ */
+
+.wa {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  /* WhatsApp palette */
+  --wa-green: #00a884;        /* primary accent (send, active) */
+  --wa-green-deep: #008069;   /* deep brand green (headings) */
+  --wa-badge: #25d366;        /* unread badge */
+  --wa-out: #d9fdd3;          /* outgoing bubble */
+  --wa-blue: #53bdeb;         /* read ticks */
+  --wa-panel: #f0f2f5;        /* light panels (headers, search) */
+  --wa-bg: #efeae2;           /* chat background */
+  --wa-line: #e9edef;         /* hairline borders */
+  --wa-ink-2: #667781;        /* secondary text (WhatsApp gray) */
+  background: var(--surface);
+}
+
+/* ============================================================
+ * Conversation list
+ * ============================================================ */
+.wa-list {
+  width: 360px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-inline-end: 1px solid var(--wa-line);
+  background: var(--surface);
+}
+
+.wa-list-head {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+.wa-list-title { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.2px; display: flex; align-items: center; gap: 9px; }
+.wa-list-title i { color: var(--wa-green); font-size: 22px; }
+.wa-list-sub { font-size: 12.5px; color: var(--wa-ink-2); padding-inline-start: 31px; }
+
+.wa-search {
+  margin: 0 var(--space-3) var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  height: 38px;
+  background: var(--wa-panel);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  transition: background 0.15s, border-color 0.15s;
+}
+.wa-search:focus-within { background: var(--surface); border-color: var(--wa-green); }
+.wa-search i { color: var(--wa-ink-2); font-size: 14px; }
+.wa-search input { flex: 1; border: none; background: transparent; font: inherit; font-size: 13.5px; color: var(--text); outline: none; }
+
+.wa-threads { flex: 1; min-height: 0; overflow-y: auto; }
+.wa-threads-empty { padding: var(--space-5); text-align: center; color: var(--text-3); font-size: 13px; }
+
+.wa-thread {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: start;
+  padding: 11px var(--space-4);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.wa-thread::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(42px + var(--space-3) + var(--space-4));
+  inset-inline-end: 0;
+  bottom: 0;
+  border-bottom: 1px solid var(--wa-line);
+}
+.wa-thread:hover { background: #f5f6f6; }
+.wa-thread.is-active { background: var(--wa-panel); }
+
+.wa-thread-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.wa-thread-top { display: flex; align-items: baseline; gap: 8px; }
+.wa-thread-name { font-weight: 600; font-size: 15px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #111b21; }
+.wa-thread-time { font-size: 11.5px; color: var(--wa-ink-2); flex-shrink: 0; }
+.wa-thread.has-unread .wa-thread-time { color: var(--wa-green); font-weight: 600; }
+.wa-thread-bottom { display: flex; align-items: center; gap: 8px; }
+.wa-thread-preview { flex: 1; min-width: 0; font-size: 13.5px; color: var(--wa-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
+.wa-thread-preview i { font-size: 12px; color: var(--wa-blue); flex-shrink: 0; }
+.wa-thread-badge {
+  flex-shrink: 0;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  display: grid; place-items: center;
+  background: var(--wa-badge); color: #fff;
+  border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+ * Active chat
+ * ============================================================ */
+.wa-chat {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background-color: var(--wa-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.022' stroke-width='1.6'%3E%3Ccircle cx='22' cy='22' r='7'/%3E%3Cpath d='M60 12l9 9M69 12l-9 9'/%3E%3Cpath d='M12 64h13M18.5 57.5v13'/%3E%3Cpath d='M56 60q9-9 18 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.wa-chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--wa-ink-2);
+}
+.wa-chat-empty i { font-size: 64px; color: var(--wa-green); opacity: 0.55; }
+.wa-chat-empty p { margin: 0; font-size: 14px; }
+
+/* ---- chat header ---- */
+.wa-chat-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-4);
+  background: var(--wa-panel);
+  border-bottom: 1px solid var(--wa-line);
+  flex-shrink: 0;
+}
+.wa-chat-who { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+.wa-chat-name { font-weight: 600; font-size: 15px; color: #111b21; }
+.wa-chat-phone { font-size: 12.5px; color: var(--wa-ink-2); font-variant-numeric: tabular-nums; }
+.wa-window {
+  margin-inline-start: auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px; font-weight: 600;
+}
+.wa-window i { font-size: 11px; }
+.wa-window.open { background: #d9fdd3; color: var(--wa-green-deep); }
+.wa-window.closed { background: var(--amber-soft); color: #b06000; }
+.wa-chat-actions { display: flex; gap: 2px; }
+.wa-chat-actions .icon-btn { color: var(--wa-ink-2); }
+
+/* ---- messages ---- */
+.wa-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-4) 8%;
+}
+.wa-day {
+  align-self: center;
+  margin: 6px 0 10px;
+  padding: 5px 13px;
+  background: #ffffff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--wa-ink-2);
+  box-shadow: 0 1px 1px rgba(11, 20, 26, 0.08);
+}
+
+.wa-bubble-row { display: flex; margin-top: 2px; }
+.wa-bubble-row.in { justify-content: flex-start; }
+.wa-bubble-row.out { justify-content: flex-end; }
+
+.wa-bubble {
+  max-width: 65%;
+  padding: 6px 9px 8px;
+  border-radius: 7.5px;
+  font-size: 14.2px;
+  line-height: 1.45;
+  color: #111b21;
+  box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+  position: relative;
+  word-break: break-word;
+}
+.wa-bubble-row.in .wa-bubble { background: #fff; border-start-start-radius: 0; }
+.wa-bubble-row.out .wa-bubble { background: var(--wa-out); border-start-end-radius: 0; }
+/* little bubble tail */
+.wa-bubble::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 8px; height: 13px;
+}
+.wa-bubble-row.in .wa-bubble::before {
+  inset-inline-start: -8px;
+  background: #fff;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+.wa-bubble-row.out .wa-bubble::before {
+  inset-inline-end: -8px;
+  background: var(--wa-out);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.wa-bubble-text { white-space: pre-wrap; }
+.wa-bubble-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  float: inline-end;
+  margin-inline-start: 12px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--wa-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.wa-tick { font-size: 14px; }
+.wa-tick.read { color: var(--wa-blue); }
+
+/* ---- composer ---- */
+.wa-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 9px var(--space-4);
+  background: var(--wa-panel);
+  border-top: 1px solid var(--wa-line);
+  flex-shrink: 0;
+}
+.wa-composer .icon-btn { color: var(--wa-ink-2); font-size: 19px; align-self: center; }
+.wa-input {
+  flex: 1;
+  resize: none;
+  max-height: 120px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 14.5px;
+  color: var(--text);
+  outline: none;
+  box-shadow: 0 1px 1px rgba(11, 20, 26, 0.06);
+}
+.wa-send {
+  flex-shrink: 0;
+  width: 42px; height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: var(--wa-green);
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: filter 0.12s, opacity 0.12s, transform 0.12s;
+}
+.wa-send:hover:not(:disabled) { filter: brightness(1.06); transform: scale(1.04); }
+.wa-send:disabled { opacity: 0.4; cursor: default; }
+
+/* ---- closed-window template bar ---- */
+.wa-template-bar {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px var(--space-4);
+  background: #fff7e6;
+  border-top: 1px solid var(--wa-line);
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #8a5400;
+}
+.wa-template-bar > i { font-size: 17px; flex-shrink: 0; color: #d9a300; }
+.wa-template-bar span { flex: 1; min-width: 0; }
+
+/* ---- responsive ---- */
+@media (max-width: 760px) {
+  .wa-list { width: 100%; }
+  /* On narrow screens show the list only; chat opens as a separate view in a real build. */
+  .wa-chat { display: none; }
+}

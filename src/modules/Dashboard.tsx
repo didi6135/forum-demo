@@ -1,75 +1,155 @@
-import { ACTIVITY, WEEK_BARS } from "../data/sampleData";
+import { ACTIVITY, ATTENTION, KPIS, TOP_DONORS, TREND, type BadgeTone } from "../data/sampleData";
+import { Avatar } from "../components/Avatar";
 
-interface Stat {
-  icon: string;
-  iconBg: string;
-  iconColor: string;
-  value: string;
-  label: string;
-  trend: string;
-  trendUp: boolean;
-}
-
-const STATS: Stat[] = [
-  { icon: "bi-inbox-fill", iconBg: "var(--primary-soft)", iconColor: "var(--primary)", value: "12", label: "מיילים לא נקראו", trend: "3 חדשים היום", trendUp: true },
-  { icon: "bi-telephone-fill", iconBg: "var(--teal-soft)", iconColor: "var(--teal)", value: "47", label: "פניות פתוחות", trend: "8% מהשבוע שעבר", trendUp: true },
-  { icon: "bi-cash-coin", iconBg: "var(--green-soft)", iconColor: "var(--green)", value: "₪18,420", label: "תרומות החודש", trend: "12% עלייה", trendUp: true },
-  { icon: "bi-receipt", iconBg: "var(--purple-soft)", iconColor: "var(--purple)", value: "184", label: "קבלות שהופקו", trend: "2 ממתינות", trendUp: false },
-];
-
-const TONE_BG: Record<string, string> = {
+const TONE_SOFT: Record<BadgeTone, string> = {
   blue: "var(--primary-soft)",
   green: "var(--green-soft)",
+  red: "var(--red-soft)",
+  amber: "var(--amber-soft)",
   purple: "var(--purple-soft)",
   teal: "var(--teal-soft)",
-  amber: "var(--amber-soft)",
+  gray: "var(--surface-2)",
 };
-const TONE_FG: Record<string, string> = {
+const TONE_FG: Record<BadgeTone, string> = {
   blue: "var(--primary)",
   green: "var(--green)",
+  red: "var(--red)",
+  amber: "#b06000",
   purple: "var(--purple)",
   teal: "var(--teal)",
-  amber: "#b06000",
+  gray: "var(--text-2)",
 };
 
+/** Build an SVG path string from a numeric series within a viewBox. */
+function linePath(values: number[], width: number, height: number, pad: number, max: number): string {
+  const step = width / (values.length - 1);
+  return values
+    .map((v, i) => {
+      const x = i * step;
+      const y = height - pad - (v / max) * (height - pad * 2);
+      return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+}
+
+function TrendChart() {
+  const w = 100;
+  const h = 42;
+  const pad = 4;
+  const max = Math.max(...TREND.map((t) => t.incoming)) * 1.1;
+  const incoming = linePath(TREND.map((t) => t.incoming), w, h, pad, max);
+  const resolved = linePath(TREND.map((t) => t.resolved), w, h, pad, max);
+  const incomingArea = `${incoming} L${w},${h - pad} L0,${h - pad} Z`;
+  const gridY = [0.25, 0.5, 0.75].map((f) => pad + f * (h - pad * 2));
+
+  return (
+    <div className="chart-wrap">
+      <svg className="chart-svg" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden>
+        <defs>
+          <linearGradient id="incFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {gridY.map((y) => (
+          <line key={y} x1="0" y1={y} x2={w} y2={y} stroke="var(--border)" strokeWidth="0.35" />
+        ))}
+        <path d={incomingArea} fill="url(#incFill)" />
+        <path d={resolved} fill="none" stroke="var(--teal)" strokeWidth="1" strokeDasharray="2.5 2" strokeLinecap="round" />
+        <path d={incoming} fill="none" stroke="var(--primary)" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <div className="chart-x">
+        {TREND.map((t) => (
+          <span key={t.day}>{t.day}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Dashboard() {
-  const maxBar = Math.max(...WEEK_BARS.map((b) => b.value));
+  const totalIncoming = TREND.reduce((s, t) => s + t.incoming, 0);
+  const totalResolved = TREND.reduce((s, t) => s + t.resolved, 0);
+  const resolveRate = Math.round((totalResolved / totalIncoming) * 100);
 
   return (
     <div className="surface-card">
       <div className="dash">
-        <h1 className="dash-greet">בוקר טוב, אברימי 👋</h1>
-        <p className="dash-greet-sub">הנה סקירה כללית של הפעילות במערכת — יום ג׳, 3 ביוני 2026.</p>
+        {/* ---- Header ---- */}
+        <div className="dash-head">
+          <div>
+            <h1 className="dash-greet">בוקר טוב, אברימי</h1>
+            <p className="dash-greet-sub">סקירת הפעילות במערכת · יום ג׳, 3 ביוני 2026</p>
+          </div>
+          <div className="dash-head-actions">
+            <div className="seg">
+              <button className="active" type="button">היום</button>
+              <button type="button">השבוע</button>
+              <button type="button">החודש</button>
+            </div>
+            <button className="btn btn-soft btn-sm" type="button">
+              <i className="bi bi-arrow-clockwise" /> רענון
+            </button>
+          </div>
+        </div>
 
+        {/* ---- KPI cards ---- */}
         <div className="stat-grid">
-          {STATS.map((s) => (
-            <div className="stat-card" key={s.label}>
-              <div className="stat-ic" style={{ background: s.iconBg, color: s.iconColor }}>
-                <i className={`bi ${s.icon}`} />
+          {KPIS.map((s) => (
+            <div className="stat-card" key={s.key}>
+              <div className="stat-top">
+                <span className="stat-label">{s.label}</span>
+                <div className="stat-ic">
+                  <i className={`bi ${s.icon}`} />
+                </div>
               </div>
               <div className="stat-val">{s.value}</div>
-              <div className="stat-label">{s.label}</div>
-              <div className={`stat-trend ${s.trendUp ? "trend-up" : "trend-down"}`}>
-                <i className={`bi ${s.trendUp ? "bi-arrow-up-right" : "bi-dash"}`} />
-                {s.trend}
+              <div className={`stat-delta ${s.deltaUp ? "up" : "flat"}`}>
+                <i className={`bi ${s.deltaUp ? "bi-arrow-up-right" : "bi-dash"}`} />
+                {s.delta}
               </div>
             </div>
           ))}
         </div>
 
+        {/* ---- Main: chart + activity ---- */}
         <div className="dash-cols">
+          <div className="panel">
+            <div className="panel-head">
+              <i className="bi bi-graph-up-arrow" style={{ color: "var(--primary)" }} />
+              <h3>מגמת פניות — נכנס מול טופל</h3>
+              <div className="chart-legend">
+                <span><i className="dot dot-primary" /> נכנס</span>
+                <span><i className="dot dot-teal" /> טופל</span>
+              </div>
+            </div>
+            <TrendChart />
+            <div className="chart-foot">
+              <div className="chart-kpi">
+                <span className="ck-val">{totalIncoming}</span>
+                <span className="ck-lbl">פניות השבוע</span>
+              </div>
+              <div className="chart-kpi">
+                <span className="ck-val">{resolveRate}%</span>
+                <span className="ck-lbl">שיעור טיפול</span>
+              </div>
+              <div className="chart-kpi">
+                <span className="ck-val">2.4 ימים</span>
+                <span className="ck-lbl">זמן טיפול ממוצע</span>
+              </div>
+            </div>
+          </div>
+
           <div className="panel">
             <div className="panel-head">
               <i className="bi bi-activity" style={{ color: "var(--primary)" }} />
               <h3>פעילות אחרונה</h3>
-              <button className="link" type="button">
-                הצג הכל
-              </button>
+              <button className="link" type="button">הצג הכל</button>
             </div>
             <div className="panel-body">
               {ACTIVITY.map((a, i) => (
                 <div className="activity-row" key={i}>
-                  <div className="activity-ic" style={{ background: TONE_BG[a.tone], color: TONE_FG[a.tone] }}>
+                  <div className="activity-ic">
                     <i className={`bi ${a.icon}`} />
                   </div>
                   <div className="activity-main">
@@ -81,27 +161,50 @@ export function Dashboard() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* ---- Secondary: attention + donors ---- */}
+        <div className="dash-cols dash-cols-even">
+          <div className="panel">
+            <div className="panel-head">
+              <i className="bi bi-flag-fill" style={{ color: "var(--red)" }} />
+              <h3>דורש טיפול היום</h3>
+              <span className="badge badge-red">{ATTENTION.length}</span>
+            </div>
+            <div className="panel-body">
+              {ATTENTION.map((a, i) => (
+                <button className="attn-row" type="button" key={i}>
+                  <div className="attn-ic" style={{ background: TONE_SOFT[a.tone], color: TONE_FG[a.tone] }}>
+                    <i className={`bi ${a.icon}`} />
+                  </div>
+                  <div className="activity-main">
+                    <div className="activity-title">{a.title}</div>
+                    <div className="activity-sub">{a.sub}</div>
+                  </div>
+                  <span className={`badge badge-${a.tone}`}>{a.tag}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="panel">
             <div className="panel-head">
-              <i className="bi bi-bar-chart-fill" style={{ color: "var(--primary)" }} />
-              <h3>פניות לפי יום</h3>
-              <button className="link" type="button">
-                השבוע
-              </button>
+              <i className="bi bi-trophy-fill" style={{ color: "var(--amber)" }} />
+              <h3>תורמים מובילים החודש</h3>
+              <button className="link" type="button">לכל התורמים</button>
             </div>
-            <div className="bars">
-              {WEEK_BARS.map((b) => (
-                <div className="bar-col" key={b.label}>
-                  <div className="bar" style={{ height: `${(b.value / maxBar) * 100}%` }} title={`${b.value} פניות`} />
-                  <span className="bar-label">{b.label}</span>
+            <div className="panel-body">
+              {TOP_DONORS.map((d, i) => (
+                <div className="donor-row" key={d.name}>
+                  <span className={`donor-rank${i === 0 ? " top" : ""}`}>{i + 1}</span>
+                  <Avatar name={d.name} size="sm" />
+                  <div className="activity-main">
+                    <div className="activity-title">{d.name}</div>
+                    <div className="activity-sub">{d.campaign}</div>
+                  </div>
+                  <span className="donor-amount">₪{d.amount.toLocaleString("he-IL")}</span>
                 </div>
               ))}
-            </div>
-            <div className="panel-head" style={{ borderTop: "1px solid var(--border)", borderBottom: "none" }}>
-              <i className="bi bi-lightning-charge-fill" style={{ color: "var(--amber)" }} />
-              <h3 style={{ fontSize: 14 }}>זמן טיפול ממוצע</h3>
-              <span style={{ marginInlineStart: "auto", fontWeight: 800, fontSize: 18 }}>2.4 ימים</span>
             </div>
           </div>
         </div>

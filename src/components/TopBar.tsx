@@ -1,6 +1,19 @@
+import { useState } from "react";
 import logoMark from "../../assets/logo_mark.png";
 
-export function TopBar() {
+interface TopBarProps {
+  /** Submit a search — opens it as a new persistent tab. */
+  onSearch: (query: string) => void;
+}
+
+export function TopBar({ onSearch }: TopBarProps) {
+  const [query, setQuery] = useState("");
+
+  function submit() {
+    const q = query.trim();
+    if (q) onSearch(q);
+  }
+
   return (
     <header className="topbar">
       <div className="brand">
@@ -15,8 +28,16 @@ export function TopBar() {
 
       <div className="topbar-search">
         <i className="bi bi-search" />
-        <input type="text" placeholder="חיפוש במיילים, לקוחות, פניות וקבלות…" />
-        <i className="bi bi-sliders" style={{ fontSize: 16 }} />
+        <input
+          type="text"
+          placeholder="חיפוש במיילים, לקוחות, פניות וקבלות…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") submit();
+          }}
+        />
+        <i className="bi bi-sliders" style={{ fontSize: 16, cursor: "pointer" }} onClick={submit} />
       </div>
 
       <div className="topbar-actions">

@@ -40,7 +40,7 @@ Progress: ░░░░░░░░░░ 0%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-(None yet)
+- 2026-06-03 (Phase 1): Component strategy = **Option B** — headless Radix UI Primitives styled with the existing vanilla-CSS token system. No Tailwind/shadcn. Keep current tokens + RTL; add `@radix-ui/react-*` per component + `DirectionProvider`. See phases/01-visual-foundation/01-RESEARCH.md.
 
 ### Deferred Issues
 
