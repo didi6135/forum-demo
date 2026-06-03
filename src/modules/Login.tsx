@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Avatar } from "../components/Avatar";
+import logoMark from "../../assets/logo_mark.png";
 
 interface LoginProps {
   onLogin: () => void;
@@ -14,56 +16,23 @@ export function Login({ onLogin }: LoginProps) {
 
   return (
     <div className="login-wrap">
-      {/* Brand / marketing panel */}
-      <aside className="login-brand">
-        <div className="login-brand-top">
-          <div className="login-brand-logo">
-            <i className="bi bi-shield-fill-check" />
-          </div>
-          <div className="login-brand-name">
-            הפורום להגנת הצרכן החרדי
-            <small>מערכת ניהול מרכזית</small>
-          </div>
-        </div>
-
-        <div className="login-brand-mid">
-          <h2>
-            כל הפעילות שלכם
-            <br />
-            במקום אחד.
-          </h2>
-          <p>
-            ניהול פניות, דואר נכנס עם סיכומי AI, מעקב לקוחות, קבלות ותרומות נדרים פלוס — הכל במערכת אחת
-            מסודרת ומאובטחת.
-          </p>
-          <div className="login-features">
-            <div className="login-feature">
-              <i className="bi bi-envelope-paper" />
-              דואר חכם עם סיכום אוטומטי לכל פנייה
-            </div>
-            <div className="login-feature">
-              <i className="bi bi-people" />
-              ניהול לקוחות ותיקים מקצה לקצה
-            </div>
-            <div className="login-feature">
-              <i className="bi bi-cash-coin" />
-              תרומות וקבלות בחיבור ישיר לנדרים פלוס
-            </div>
-          </div>
-        </div>
-
-        <div className="login-brand-foot">© 2026 הפורום להגנת הצרכן החרדי · כל הזכויות שמורות</div>
-      </aside>
-
-      {/* Form panel */}
+      {/* ---------- Form ---------- */}
       <main className="login-form-panel">
         <form className="login-card" onSubmit={handleSubmit}>
+          <div className="login-lockup">
+            <img className="login-lockup-logo" src={logoMark} alt="הפורום להגנת הצרכן החרדי" />
+            <div className="login-lockup-text">
+              <b>הפורום להגנת הצרכן החרדי</b>
+              <span>מערכת ניהול מרכזית</span>
+            </div>
+          </div>
+
           <span className="demo-pill">
             <i className="bi bi-stars" />
             גרסת הדגמה
           </span>
-          <h1>ברוכים הבאים 👋</h1>
-          <p className="login-sub">התחברו כדי להמשיך אל מערכת הניהול.</p>
+          <h1>התחברות</h1>
+          <p className="login-sub">הזינו את הפרטים שלכם כדי להיכנס למערכת.</p>
 
           <div className="field">
             <label htmlFor="email">כתובת אימייל</label>
@@ -119,10 +88,75 @@ export function Login({ onLogin }: LoginProps) {
           </button>
 
           <p className="login-foot">
-            אין לכם חשבון? <a href="#signup">צרו קשר עם מנהל המערכת</a>
+            <i className="bi bi-lock-fill" style={{ fontSize: 12, marginInlineEnd: 5 }} />
+            חיבור מאובטח · © 2026 הפורום להגנת הצרכן החרדי
           </p>
         </form>
       </main>
+
+      {/* ---------- Product peek ---------- */}
+      <aside className="login-canvas">
+        <div className="peek">
+          <p className="peek-caption">
+            כל הפעילות שלכם, <span>במקום אחד.</span>
+          </p>
+
+          <div className="peek-window">
+            <div className="peek-chrome">
+              <div className="peek-dots">
+                <i />
+                <i />
+                <i />
+              </div>
+              <span className="peek-url">forum.org.il · דואר נכנס</span>
+            </div>
+            <div className="peek-body">
+              <div className="peek-mail">
+                <Avatar name="משה ברגר" size="md" />
+                <div className="peek-mail-main">
+                  <div className="peek-mail-top">
+                    <span className="peek-mail-from">משה ברגר</span>
+                    <span className="badge badge-red">תלונה</span>
+                    <span className="peek-mail-time">09:42</span>
+                  </div>
+                  <div className="peek-mail-subject">תלונה על חברת סלולר — חיוב כפול</div>
+                  <div className="peek-ai">
+                    <span className="peek-ai-head">
+                      <i className="bi bi-stars" /> סיכום AI
+                    </span>
+                    <p>חיוב כפול של 178₪ במקום 89₪. הלקוח פנה 3 פעמים ללא מענה ודורש החזר וטיפול מול החברה.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="peek-kpis">
+                <div className="peek-kpi">
+                  <div className="peek-kpi-val">47</div>
+                  <div className="peek-kpi-lbl">פניות היום</div>
+                </div>
+                <div className="peek-kpi">
+                  <div className="peek-kpi-val">128K</div>
+                  <div className="peek-kpi-lbl">תרומות החודש</div>
+                </div>
+                <div className="peek-kpi">
+                  <div className="peek-kpi-val">12</div>
+                  <div className="peek-kpi-lbl">תיקים פתוחים</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="peek-float">
+            <div className="peek-float-ic">
+              <i className="bi bi-cash-coin" />
+            </div>
+            <div>
+              <b>₪ 1,000</b>
+              <small>תרומה התקבלה · נחום גולד</small>
+            </div>
+          </div>
+        </div>
+      </aside>
     </div>
   );
 }

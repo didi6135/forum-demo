@@ -197,13 +197,14 @@ button {
 .brand-logo {
   width: 40px;
   height: 40px;
-  border-radius: 11px;
   display: grid;
   place-items: center;
-  color: #fff;
-  font-size: 20px;
-  background: linear-gradient(135deg, #1a73e8, #4285f4 60%, #5b8def);
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.35);
+  flex-shrink: 0;
+}
+.brand-logo img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
 }
 
 .brand-text {
@@ -1190,108 +1191,226 @@ button {
 }
 
 /* ============================================================
-   Login screen
+   Login screen — "Product Peek"
+   Focused form (inline-start / right in RTL) + a calm canvas that
+   shows a real slice of the product (inline-end / left).
    ============================================================ */
 .login-wrap {
   height: 100vh;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: minmax(440px, 0.82fr) 1.18fr;
   background: var(--surface);
-}
-
-/* Brand panel */
-.login-brand {
-  position: relative;
   overflow: hidden;
-  color: #fff;
-  padding: 56px 60px;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(150deg, #1557b0 0%, #1a73e8 45%, #4285f4 100%);
-}
-.login-brand::before,
-.login-brand::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-}
-.login-brand::before { width: 460px; height: 460px; top: -160px; inset-inline-start: -120px; }
-.login-brand::after { width: 320px; height: 320px; bottom: -120px; inset-inline-end: -80px; }
-
-.login-brand-top {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  position: relative;
-  z-index: 1;
-}
-.login-brand-logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-size: 26px;
-  background: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(4px);
-}
-.login-brand-name { font-weight: 700; font-size: 17px; line-height: 1.3; }
-.login-brand-name small { display: block; font-weight: 400; font-size: 12.5px; opacity: 0.8; }
-
-.login-brand-mid {
-  margin-top: auto;
-  margin-bottom: auto;
-  position: relative;
-  z-index: 1;
-}
-.login-brand-mid h2 {
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.6px;
-  line-height: 1.25;
-  margin: 0 0 16px;
-}
-.login-brand-mid p {
-  font-size: 15.5px;
-  line-height: 1.7;
-  opacity: 0.9;
-  max-width: 440px;
-  margin: 0 0 30px;
-}
-.login-features { display: flex; flex-direction: column; gap: 14px; }
-.login-feature { display: flex; align-items: center; gap: 13px; font-size: 14.5px; }
-.login-feature i {
-  width: 34px; height: 34px;
-  border-radius: 9px;
-  display: grid; place-items: center;
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 16px;
-}
-.login-brand-foot {
-  position: relative;
-  z-index: 1;
-  font-size: 12.5px;
-  opacity: 0.75;
 }
 
-/* Form panel */
+/* ---------- Form side ---------- */
 .login-form-panel {
   display: grid;
   place-items: center;
   padding: 40px;
+  position: relative;
 }
-.login-card { width: 100%; max-width: 380px; }
+.login-card {
+  width: 100%;
+  max-width: 388px;
+  animation: login-rise 0.6s var(--ease-emphasized) both;
+}
+
+/* compact brand lockup above the form */
+.login-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 38px;
+}
+.login-lockup-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.login-lockup-text { display: flex; flex-direction: column; line-height: 1.25; }
+.login-lockup-text b { font-size: 14.5px; font-weight: 700; letter-spacing: -0.2px; }
+.login-lockup-text span { font-size: 11.5px; color: var(--text-3); font-weight: 500; }
+
 .login-card h1 {
-  font-size: 26px;
+  font-family: var(--font-display);
+  font-size: 27px;
   font-weight: 800;
   letter-spacing: -0.5px;
   margin: 0 0 6px;
 }
 .login-card .login-sub {
   color: var(--text-2);
-  margin: 0 0 30px;
+  margin: 0 0 28px;
   font-size: 14.5px;
+}
+
+/* ---------- Canvas side (product peek) ---------- */
+.login-canvas {
+  position: relative;
+  overflow: hidden;
+  border-inline-start: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(125% 90% at 78% 8%, var(--primary-50) 0%, transparent 58%),
+    var(--surface-container-low);
+}
+/* faded dot grid — structure, not decoration */
+.login-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(60, 64, 67, 0.07) 1px, transparent 1.4px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(118% 100% at 72% 26%, #000 38%, transparent 84%);
+  mask-image: radial-gradient(118% 100% at 72% 26%, #000 38%, transparent 84%);
+}
+
+.peek {
+  position: relative;
+  width: min(540px, 78%);
+  animation: login-rise 0.7s var(--ease-emphasized) 0.05s both;
+}
+.peek-caption {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+.peek-caption span { color: var(--primary-700); }
+
+/* faux app window */
+.peek-window {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px -28px rgba(26, 53, 96, 0.4), var(--shadow-md);
+  overflow: hidden;
+}
+.peek-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-container-low);
+}
+.peek-dots { display: flex; gap: 6px; }
+.peek-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+.peek-chrome .peek-url {
+  margin-inline-start: 10px;
+  font-size: 11.5px;
+  color: var(--text-3);
+  font-family: var(--font-mono);
+}
+.peek-body { padding: 16px; }
+
+/* mini mail row */
+.peek-mail {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.peek-mail-main { min-width: 0; flex: 1; }
+.peek-mail-top { display: flex; align-items: center; gap: 8px; }
+.peek-mail-from { font-weight: 700; font-size: 13px; }
+.peek-mail-time { margin-inline-start: auto; font-size: 11px; color: var(--text-3); font-weight: 600; }
+.peek-mail-subject {
+  font-size: 12.5px;
+  color: var(--text);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* AI summary chip block */
+.peek-ai {
+  margin-top: 10px;
+  border: 1px solid var(--primary-100);
+  background: linear-gradient(135deg, #f3f8ff, #eef4ff);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+}
+.peek-ai-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-700);
+  margin-bottom: 5px;
+}
+.peek-ai p { margin: 0; font-size: 12px; line-height: 1.55; color: #2b3a55; }
+
+/* mini KPI strip */
+.peek-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+.peek-kpi {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 12px;
+  background: var(--surface);
+}
+.peek-kpi-val {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.peek-kpi-lbl { font-size: 10.5px; color: var(--text-2); font-weight: 600; margin-top: 1px; }
+
+/* floating accent card — donation toast */
+.peek-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px -20px rgba(26, 53, 96, 0.45), var(--shadow-sm);
+  inset-block-end: -22px;
+  inset-inline-start: -30px;
+  animation: login-rise 0.7s var(--ease-emphasized) 0.22s both;
+}
+.peek-float-ic {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  background: var(--green-soft);
+  color: var(--green);
+  flex-shrink: 0;
+}
+.peek-float b { font-size: 13.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.peek-float small { display: block; font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+@keyframes login-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .login-card, .peek, .peek-float { animation: none; }
 }
 
 .field { margin-bottom: 18px; }
@@ -1699,7 +1818,7 @@ button {
   .split { grid-template-columns: 340px 1fr; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 900px) {
-  .login-brand { display: none; }
+@media (max-width: 980px) {
+  .login-canvas { display: none; }
   .login-wrap { grid-template-columns: 1fr; }
 }
